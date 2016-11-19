@@ -1,0 +1,58 @@
+PROGRAM nbody_rk4
+! Written 18/11/2016 by dh4gan
+! This code implements a 4th order Runge Kutta integration of an N-Body system
+
+use nbodydata
+
+! Print code header
+ IMPLICIT NONE
+
+  !             Display header
+  print*, " "
+  print*, "-----------------------------------------------"
+  print*, "     N-BODY INTEGRATOR (RUNGE KUTTA 4TH ORDER) "
+  print*, "     Created by D.Forgan, 18th November 2016   "
+  print*, "-----------------------------------------------"
+  print*, " "
+  print*, "-----------------------------------------------"
+  !print*, " input parameters in ",paramfile
+
+
+! Read in parameter file and setup bodies
+
+call initial
+
+! Begin loop
+
+t = 0.0
+tdump = tsnap
+
+do while(t<tend)
+
+   call integrate(dt,pos,vel,newpos,newvel)
+
+   ! Do a timestep check before updating position,velocity
+   call timestep(newpos,newvel)
+
+   pos = newpos
+   vel = newvel
+
+   t = t + dt
+
+   if (t>tdump) then
+      call output
+      tdump = tdump + tsnap
+   endif
+
+   call timestep
+
+enddo
+
+! Once integration complete, close all files and exit
+! TODO - make a separate subroutine for end of integrations
+do ibody=1,N
+    close(ibody)
+enddo
+
+
+END PROGRAM nbody_rk4
