@@ -27,6 +27,7 @@ do ibody=1,N
 
    error = 0.0
    do ix=1,3
+
       error = error + (position(ix,ibody)-testpos2(ix,ibody))*(position(ix,ibody)-testpos2(ix,ibody))
       error = error + (velocity(ix,ibody)-testvel2(ix,ibody))*(velocity(ix,ibody)-testvel2(ix,ibody))
    enddo
@@ -39,7 +40,6 @@ enddo
 ! Compute new deltat based on this error level
 ! If current error below user defined tolerance, then dt is increased
 ! If current error above tolerance, then dt is decreased
-
 
 dt = dt*abs(tolerance/maxerror)**0.2
 

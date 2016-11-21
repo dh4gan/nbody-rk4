@@ -12,7 +12,7 @@ integer, intent(in) :: snapshotcounter
 if(snapshots=='y') then
    write(fileno,filenumformat) snapshotcounter
 
-   outputfile = outputprefix//"."//fileno
+   outputfile = TRIM(outputprefix)//"."//TRIM(fileno)
    open(isnap,file=outputfile,form='formatted')
 
    do ibody=1,N

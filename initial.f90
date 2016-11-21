@@ -21,6 +21,13 @@ allocate(pos(3,N),vel(3,N),acc(3,N))
 allocate(newpos(3,N),newvel(3,N))
 allocate(mass(N),r(N),semimaj(N),ecc(N),inc(N))
 
+pos(:,:) = 0.0
+vel(:,:) = 0.0
+acc(:,:) = 0.0
+
+newpos(:,:) = 0.0
+newvel(:,:) = 0.0
+
 mass(1) = 1.0
 mass(2) = 3.0e-6
 

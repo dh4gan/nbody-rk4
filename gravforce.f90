@@ -18,13 +18,13 @@ do ibody=1,N
     do jbody=1,N
 
         do ix=1,3
-            sep(ix) = position(ibody,ix) - position(jbody,ix)
+            sep(ix) = position(ix,ibody) - position(ix,jbody)
         enddo
 
         relpos = sqrt(sep(1)*sep(1) + sep(2)*sep(2)+sep(3)*sep(3))
 
         do ix=1,3
-            acceleration(ibody,ix) = acceleration(ibody,ix) - mass(ibody)*mass(jbody)*sep(ix)/(relpos*relpos*relpos)
+            acceleration(ix,ibody) = acceleration(ix,ibody) - mass(ibody)*mass(jbody)*sep(ix)/(relpos*relpos*relpos)
         enddo
     enddo
 

@@ -15,8 +15,11 @@ real,dimension(3,N) :: k1pos, k2pos, k3pos, k4pos
 ! Begin calculating k-coefficients (for velocity and position)
 
 ! First k-coeff for velocity = acceleration
+print*, N
+print*, 'Position is (before gravforce)', position(:,1)
 call gravforce(position,k1vel)
-
+print*, 'After gravforce: ',position(:,1)
+print*, k1vel
 ! First k-coeff for position = velocity
 k1pos(:,:) = velocity(:,:)
 

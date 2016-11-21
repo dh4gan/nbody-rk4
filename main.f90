@@ -29,9 +29,12 @@ dt = 1.0e-5
 tdump = tsnap
 
 do while(t<tend)
+   print*, 't = ',t
+   print*, 'pos = ',pos
+   print*, 'vel = ',vel
 
    call integrate(dt,pos,vel,newpos,newvel)
-
+   STOP
    ! Do a timestep check before updating position,velocity
    call timestep(newpos,newvel)
 
