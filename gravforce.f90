@@ -5,8 +5,8 @@ subroutine gravforce(position,acceleration)
 use nbodydata
 implicit none
 
-real, dimension(:,:),intent(in) :: position
-real, dimension(:,:), intent(out) :: acceleration
+real, dimension(3,N),intent(in) :: position
+real, dimension(3,N), intent(out) :: acceleration
 
 real :: relpos
 real, dimension(3) :: sep

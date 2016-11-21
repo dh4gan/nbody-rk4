@@ -9,13 +9,16 @@ implicit none
 integer :: nzeros
 real :: nfiles
 character(1) :: zerostring
-character(10) :: fileno
+
 
 ! TODO - read setup from file 
 
+snapshots = 'n'
+outputprefix = 'test'
 N = 2
 
 allocate(pos(3,N),vel(3,N),acc(3,N))
+allocate(newpos(3,N),newvel(3,N))
 allocate(mass(N),r(N),semimaj(N),ecc(N),inc(N))
 
 mass(1) = 1.0
@@ -32,23 +35,31 @@ vel(2,2) = 1.0
 tend = 10.0
 tsnap = 0.1
 
-! Predicted number of files, and resulting format
+! If the output format is individual bodies
+if(snapshots=='y') then
+   
+   ! Predicted number of files, and resulting format
 
-nfiles = tend/tsnap
-nzeros = int(log10(nfiles)) +2
-write(zerostring, '(I1)')nzeros
-snapshotformat = "(I"//TRIM(zerostring)//"."//TRIM(zerostring)//")"
+   nfiles = tend/tsnap
+   nzeros = int(log10(nfiles)) +2
+   write(zerostring, '(I1)')nzeros
+   filenumformat = "(I"//TRIM(zerostring)//"."//TRIM(zerostring)//")"
 
+else
 
-! Open output files
-do ibody=1,N
-  write(fileno, snapshotformat) ibody
+   nfiles = N
+   nzeros = int(log10(nfiles)) +2
+   write(zerostring, '(I1)')nzeros
+   filenumformat = "(I"//TRIM(zerostring)//"."//TRIM(zerostring)//")"
 
-  fileno = TRIM(fileno)
+   ! Open output files
+   do ibody=1,N
+      write(fileno, filenumformat) ibody
 
-    outputfile = outputprefix//"."//fileno
-
-   open(ibody,file=outputfile, form="formatted")
-enddo
+      outputfile = TRIM(outputprefix)//"."//TRIM(fileno)
+      
+      open(ibody,file=outputfile, form="formatted")
+   enddo
+endif
 
 end subroutine initial

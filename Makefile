@@ -11,7 +11,7 @@
 FC     = gfortran 
 
 # For files generated from stacpolly use these flags
-FFLAGS = -O3 -frecord-marker=4 -fdefault-real-8 -Wall
+FFLAGS = -O3 -frecord-marker=4 -fdefault-real-8 -Wall -fbounds-check
 
 # Create object files:
 %.o: %.f

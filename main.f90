@@ -25,6 +25,7 @@ call initial
 ! Begin loop
 
 t = 0.0
+dt = 1.0e-5
 tdump = tsnap
 
 do while(t<tend)
@@ -34,18 +35,22 @@ do while(t<tend)
    ! Do a timestep check before updating position,velocity
    call timestep(newpos,newvel)
 
+   ! IF timestep passes tolerance, update positions
+   ! Otherwise, repeat step with new dt
+
+   if(maxerror > tolerance ) cycle
+
    pos = newpos
    vel = newvel
 
    t = t + dt
 
+   
    if (t>tdump) then
       call output
       tdump = tdump + tsnap
    endif
-
-   call timestep
-
+   
 enddo
 
 ! Once integration complete, close all files and exit
