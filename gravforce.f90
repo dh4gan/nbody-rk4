@@ -26,7 +26,7 @@ do ibody=1,N
         relpos = sqrt(sep(1)*sep(1) + sep(2)*sep(2)+sep(3)*sep(3) +rsoft*rsoft)
 
         do ix=1,3
-            acceleration(ix,ibody) = acceleration(ix,ibody) - G*mass(ibody)*mass(jbody)*sep(ix)/(relpos*relpos*relpos)
+            acceleration(ix,ibody) = acceleration(ix,ibody) - G*mass(jbody)*sep(ix)/(relpos*relpos*relpos)
         enddo
     enddo
 

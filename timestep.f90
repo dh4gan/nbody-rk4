@@ -41,9 +41,14 @@ enddo
 
 
 dt = dt*abs(tolerance/maxerror)**0.2
+
 if(maxerror>tolerance) then
    print*,'error too large'
    print*,tolerance,maxerror,dt
+   dt = dt*0.1
 endif
+
+! Stops timesteps getting too big - ensures at least 10 timesteps per output
+if (dt > tsnap) dt = tsnap/10.0
 
 end subroutine timestep

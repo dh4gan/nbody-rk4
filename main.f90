@@ -25,7 +25,7 @@ call initial
 ! Begin loop
 
 t = 0.0
-dt = 1.0e-5
+dt = 1.0e-3
 tdump = tsnap
 
 ! Output initial conditions
@@ -34,8 +34,8 @@ snapshotcounter = 0
 call output(snapshotcounter)
 
 do while(t<tend)
+   print*, 't,dt = ',t,dt
 
-   print*, 't=',t
    call integrate(dt,pos,vel,newpos,newvel)
 
    ! Do a timestep check before updating position,velocity
@@ -44,7 +44,7 @@ do while(t<tend)
    ! IF timestep passes tolerance, update positions
    ! Otherwise, repeat step with new dt
 
-   if(maxerror > tolerance ) cycle
+   if(maxerror > tolerance) cycle
 
    pos = newpos
    vel = newvel
@@ -53,6 +53,7 @@ do while(t<tend)
 
    
    if (t>tdump) then
+         print*, 't, dt=',t,dt
       snapshotcounter = snapshotcounter + 1
       call output(snapshotcounter)
       tdump = tdump + tsnap

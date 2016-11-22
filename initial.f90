@@ -16,9 +16,9 @@ character(1) :: zerostring
 snapshots = 'n'
 outputprefix = 'test'
 N = 2
-tolerance = 1.0e-10
-tend = 1.0
-tsnap = 0.001
+tolerance = 1.0e-4
+tend = 6.283
+tsnap = 0.1
 rsoft = 1.0e-5
 
 
@@ -42,7 +42,7 @@ pos(:,2) = 0.0
 pos(1,2) = 1.0
 
 vel(:,:) = 0.0
-vel(2,2) = 0.001
+vel(2,2) = 1.0
 
 
 ! If the output format is individual bodies
