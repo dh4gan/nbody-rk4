@@ -13,18 +13,20 @@ real, dimension(3) :: sep
 
 do ibody=1,N
 
-    acceleration(ibody,:)=0.0
+    acceleration(:,ibody)=0.0
 
     do jbody=1,N
+
+       if(ibody==jbody) cycle
 
         do ix=1,3
             sep(ix) = position(ix,ibody) - position(ix,jbody)
         enddo
 
-        relpos = sqrt(sep(1)*sep(1) + sep(2)*sep(2)+sep(3)*sep(3))
+        relpos = sqrt(sep(1)*sep(1) + sep(2)*sep(2)+sep(3)*sep(3) +rsoft*rsoft)
 
         do ix=1,3
-            acceleration(ix,ibody) = acceleration(ix,ibody) - mass(ibody)*mass(jbody)*sep(ix)/(relpos*relpos*relpos)
+            acceleration(ix,ibody) = acceleration(ix,ibody) - G*mass(ibody)*mass(jbody)*sep(ix)/(relpos*relpos*relpos)
         enddo
     enddo
 

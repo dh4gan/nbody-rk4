@@ -16,6 +16,11 @@ character(1) :: zerostring
 snapshots = 'n'
 outputprefix = 'test'
 N = 2
+tolerance = 1.0e-10
+tend = 1.0
+tsnap = 0.001
+rsoft = 1.0e-5
+
 
 allocate(pos(3,N),vel(3,N),acc(3,N))
 allocate(newpos(3,N),newvel(3,N))
@@ -37,10 +42,8 @@ pos(:,2) = 0.0
 pos(1,2) = 1.0
 
 vel(:,:) = 0.0
-vel(2,2) = 1.0
+vel(2,2) = 0.001
 
-tend = 10.0
-tsnap = 0.1
 
 ! If the output format is individual bodies
 if(snapshots=='y') then
@@ -65,8 +68,12 @@ else
 
       outputfile = TRIM(outputprefix)//"."//TRIM(fileno)
       
-      open(ibody,file=outputfile, form="formatted")
+      open(ibody+ilog,file=outputfile, form="formatted")
    enddo
 endif
+
+! Open log file
+
+open(ilog,file=TRIM(outputprefix)//'.log',form='formatted')
 
 end subroutine initial

@@ -13,13 +13,14 @@ real, parameter :: AU = 1.496e13
 !
 
 integer,parameter :: isnap = 10
+integer,parameter :: ilog = 2
 
-integer :: N,ibody,jbody,ix
+integer :: N,ibody,jbody,ix,snapshotcounter
 
 ! Reals
 
 real :: t, dt, tsnap, tdump, tend
-real :: maxerror, tolerance
+real :: maxerror, tolerance,rsoft
 
 ! Body data
 

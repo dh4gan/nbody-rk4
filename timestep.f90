@@ -13,8 +13,6 @@ real, dimension(3,N) :: testpos1,testvel1,testpos2,testvel2
 
 halfdt = dt/2
 
-
-
 call integrate(halfdt,pos,vel,testpos1,testvel1)
 call integrate(halfdt,testpos1,testvel1,testpos2,testvel2)
 
@@ -41,7 +39,11 @@ enddo
 ! If current error below user defined tolerance, then dt is increased
 ! If current error above tolerance, then dt is decreased
 
-dt = dt*abs(tolerance/maxerror)**0.2
 
+dt = dt*abs(tolerance/maxerror)**0.2
+if(maxerror>tolerance) then
+   print*,'error too large'
+   print*,tolerance,maxerror,dt
+endif
 
 end subroutine timestep
