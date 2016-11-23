@@ -53,6 +53,7 @@ tsnap = tsnap*twopi
 
 allocate(pos(3,N),vel(3,N),acc(3,N))
 allocate(newpos(3,N),newvel(3,N))
+allocate(angmom(3,N),angmag(N),ekin(N),epot(N),etot(N))
 allocate(mass(N),r(N),semimaj(N),ecc(N),inc(N))
 
 pos(:,:) = 0.0
@@ -104,5 +105,20 @@ endif
 ! Open log file
 
 open(ilog,file=TRIM(outputprefix)//'.log',form='formatted')
+
+! Calculate initial energy, angular momentum and store
+
+call calc_acceleration(pos,vel,acc)
+call orbits
+
+initial_system_ang = system_ang
+initial_system_energy = system_energy
+
+print*, 'Initial Total Energy = ', initial_system_energy
+print*, 'Initial Total Angular Momentum (Magnitude): ',initial_system_ang
+
+! Measure wall clock time
+call system_clock(start_clock,clock_rate,clock_max)
+
 
 end subroutine initial

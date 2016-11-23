@@ -30,9 +30,9 @@ tdump = tsnap
 
 ! Output initial conditions
 snapshotcounter = 0
-
 call output(snapshotcounter)
 
+! Begin integration
 do while(t<tend)
 
    call integrate(dt,pos,vel,newpos,newvel)
@@ -50,7 +50,6 @@ do while(t<tend)
 
    t = t + dt
 
-   
    if (t>tdump) then
          write(*,'(A,1P,2E12.3,A)'), 't, dt=',t/twopi,dt/twopi, ' years'
       snapshotcounter = snapshotcounter + 1
@@ -61,10 +60,7 @@ do while(t<tend)
 enddo
 
 ! Once integration complete, close all files and exit
-! TODO - make a separate subroutine for end of integrations
-do ibody=1,N
-    close(ibody)
-enddo
 
+call endrun
 
 END PROGRAM nbody_rk4

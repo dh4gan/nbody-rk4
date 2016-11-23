@@ -23,13 +23,19 @@ integer :: N,ibody,jbody,ix,snapshotcounter
 
 real :: t, dt, tsnap, tdump, tend
 real :: maxerror, tolerance,rsoft
+real :: system_ang, system_energy, initial_system_ang,initial_system_energy
+real :: dE, dL
+integer :: start_clock,end_clock,clock_rate,clock_max
 
 ! Body data
 
 real, allocatable, dimension(:,:) :: pos,vel,acc
 real, allocatable,dimension(:,:) :: newpos,newvel
+real,allocatable,dimension(:,:) :: angmom
 
-real,allocatable,dimension(:) :: mass, r,semimaj,ecc,inc,longascend,argper,longper
+real,dimension(3) :: system_angmom,rcom,vcom,acom
+real,allocatable,dimension(:) :: mass, ekin,epot,etot,angmag
+real,allocatable,dimension(:) :: r,semimaj,ecc,inc,longascend,argper,longper
 
 ! Parameter filename
 

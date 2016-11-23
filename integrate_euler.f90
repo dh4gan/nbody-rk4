@@ -9,7 +9,7 @@ real, dimension(3,N), intent(in) :: position,velocity
 real,dimension(3,N) :: acceleration
 real,dimension(3,N),intent(out) :: newposition,newvelocity
 
-call calc_grav_acceleration(position,acceleration)
+call calc_acceleration(position,velocity,acceleration)
 
 newvelocity(:,:) = velocity(:,:) + acceleration*deltat
 newposition(:,:) = position(:,:) + newvelocity*deltat
