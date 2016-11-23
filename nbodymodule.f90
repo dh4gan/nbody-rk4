@@ -47,5 +47,60 @@ character(len=100) :: outputfile
 character(len=50) :: outputprefix
 character(len=10) :: fileno
 
+contains
+
+subroutine rotate_X(vector,nrows,angle)
+! Rotates 3 x nrows vector of particle data around x-axis by angle
+
+implicit none
+integer, intent(in)::nrows
+real,intent(in) :: angle
+real,intent(inout),dimension(3,nrows) :: vector
+
+real, dimension(3,nrows) :: newvector
+
+newvector(1,:) = vector(1,:)
+newvector(2,:) = vector(2,:)*cos(angle) - vector(3,:)*sin(angle);
+newvector(3,:) = vector(2,:)*sin(angle) + vector(3,:)*cos(angle);
+
+vector(:,:) = newvector(:,:)
+
+end subroutine rotate_X
+
+subroutine rotate_Y(vector,nrows,angle)
+! Rotates 3 x nrows vector of particle data around x-axis by angle
+
+implicit none
+integer, intent(in)::nrows
+real,intent(in) :: angle
+real,intent(inout),dimension(3,nrows) :: vector
+
+real, dimension(3,nrows) :: newvector
+
+newvector(1,:) = vector(1,:)*cos(angle) + vector(3,:)*sin(angle);
+newvector(2,:) = vector(2,:)
+newvector(3,:) = -vector(1,:)*sin(angle) + vector(3,:)*cos(angle);
+
+vector(:,:) = newvector(:,:)
+
+end subroutine rotate_Y
+
+subroutine rotate_Z(vector,nrows,angle)
+! Rotates 3 x nrows vector of particle data around x-axis by angle
+
+implicit none
+integer, intent(in)::nrows
+real,intent(in) :: angle
+real,intent(inout),dimension(3,nrows) :: vector
+
+real, dimension(3,nrows) :: newvector
+
+newvector(1,:) = vector(1,:)*cos(angle) - vector(2,:)*sin(angle);
+newvector(2,:) = vector(1,:)*sin(angle) + vector(2,:)*cos(angle);
+newvector(3,:) = vector(3,:)
+
+vector(:,:) = newvector(:,:)
+
+end subroutine rotate_Z
 
 end module nbodydata
