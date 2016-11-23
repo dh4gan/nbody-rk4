@@ -1,4 +1,4 @@
-subroutine gravforce(position,acceleration)
+subroutine calc_grav_acceleration(position,acceleration)
 ! Calculates gravitational force between all bodies (brute force)
 ! given input positions
 
@@ -35,4 +35,4 @@ enddo
 acceleration(:,:) = acceleration(:,:)*G
 
 return
-end subroutine gravforce
+end subroutine calc_grav_acceleration

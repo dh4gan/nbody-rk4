@@ -8,8 +8,9 @@ use nbodydata
 implicit none
 integer, intent(in) :: counter
 
+102 format (1P,13E15.5)
 
-call gravforce(pos,acc)
+call calc_grav_acceleration(pos,acc)
 
 ! Either output timestep as a single snapshot
 if(snapshots=='y') then
@@ -19,7 +20,7 @@ if(snapshots=='y') then
    open(isnap,file=outputfile,form='formatted')
 
    do ibody=1,N
-      write(isnap,*) t, pos(:,ibody), vel(:,ibody), acc(:,ibody), semimaj(ibody),ecc(ibody),inc(ibody)
+      write(isnap,102) t/twopi, pos(:,ibody), vel(:,ibody), acc(:,ibody), semimaj(ibody),ecc(ibody),inc(ibody)
     call flush(isnap)
  enddo
 
@@ -29,7 +30,7 @@ else
    ! Either output individual bodies to separate files
 
    do ibody=1,N
-      write(ibody+ilog,*) t, pos(:,ibody), vel(:,ibody), acc(:,ibody), semimaj(ibody),ecc(ibody),inc(ibody)
+      write(ibody+ilog,102) t/twopi, pos(:,ibody), vel(:,ibody), acc(:,ibody), semimaj(ibody),ecc(ibody),inc(ibody)
       call flush(ibody)
    enddo
 

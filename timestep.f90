@@ -43,8 +43,8 @@ enddo
 dt = dt*abs(tolerance/maxerror)**0.2
 
 if(maxerror>tolerance) then
-   print*,'error too large'
-   print*,tolerance,maxerror,dt
+   !print*,'error too large'
+   !print*,tolerance,maxerror,dt
    dt = dt*0.1
 endif
 

@@ -13,13 +13,42 @@ character(1) :: zerostring
 
 ! TODO - read setup from file 
 
-snapshots = 'n'
-outputprefix = 'test'
-N = 2
-tolerance = 1.0e-4
-tend = 6.283
-tsnap = 0.1
-rsoft = 1.0e-5
+print*, 'Reading inputs from ',trim(paramfile)
+
+open(10,file=paramfile,form='formatted')
+read(10,*) outputprefix
+read(10,*) snapshots
+read(10,*) tend
+read(10,*) tsnap
+read(10,*) tolerance
+read(10,*) rsoft
+read(10,*) N
+
+
+print*, N, ' bodies to be integrated'
+print*, 'Files will be written with prefix ', outputprefix
+if(snapshots=='y') then
+    print*, 'Output in the form of snapshots'
+else
+    print*, 'Output in the form of individual files for each particle'
+endif
+
+print*, 'Maximum Runtime: ',tend,' years'
+print*, 'Output every ',tsnap,' years'
+
+print*, 'RK4 tolerance: ',tolerance
+print*, 'Softening Length: ',rsoft, ' AU'
+
+tend = tend*twopi
+tsnap = tsnap*twopi
+
+!snapshots = 'n'
+!outputprefix = 'test'
+!N = 2
+!tolerance = 1.0e-4
+!tend = 100*6.283
+!tsnap = 0.1
+!rsoft = 1.0e-5
 
 
 allocate(pos(3,N),vel(3,N),acc(3,N))

@@ -1,0 +1,7 @@
+test  			Output File Prefix
+n			Output data in snapshots (y) or individual particle files (n)
+100.0			Maximum run time (years)
+0.1			Output every x years
+1.0e-5			Error Tolerance Limit
+1.0e-5			Gravitational Softening Length (AU)
+2			Number of Particles

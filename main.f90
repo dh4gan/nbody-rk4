@@ -15,7 +15,7 @@ use nbodydata
   print*, "-----------------------------------------------"
   print*, " "
   print*, "-----------------------------------------------"
-  !print*, " input parameters in ",paramfile
+  print*, " input parameters in ",trim(paramfile)
 
 
 ! Read in parameter file and setup bodies
@@ -34,7 +34,6 @@ snapshotcounter = 0
 call output(snapshotcounter)
 
 do while(t<tend)
-   print*, 't,dt = ',t,dt
 
    call integrate(dt,pos,vel,newpos,newvel)
 
@@ -53,7 +52,7 @@ do while(t<tend)
 
    
    if (t>tdump) then
-         print*, 't, dt=',t,dt
+         write(*,'(A,1P,2E12.3,A)'), 't, dt=',t/twopi,dt/twopi, ' years'
       snapshotcounter = snapshotcounter + 1
       call output(snapshotcounter)
       tdump = tdump + tsnap

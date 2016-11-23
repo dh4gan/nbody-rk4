@@ -7,6 +7,8 @@ module nbodydata
 real, parameter :: G=1
 real, parameter :: msol = 1.99e33
 real, parameter :: AU = 1.496e13
+real, parameter :: pi = 3.14159265
+real, parameter :: twopi = 2.0*pi
 
 !
 ! Integers
