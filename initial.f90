@@ -55,6 +55,7 @@ allocate(pos(3,N),vel(3,N),acc(3,N))
 allocate(newpos(3,N),newvel(3,N))
 allocate(angmom(3,N),angmag(N),ekin(N),epot(N),etot(N))
 allocate(mass(N),r(N),semimaj(N),ecc(N),inc(N))
+allocate(longascend(N),argper(N),longper(N), trueanom(N))
 
 pos(:,:) = 0.0
 vel(:,:) = 0.0

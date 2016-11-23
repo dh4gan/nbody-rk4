@@ -7,7 +7,7 @@ use nbodydata
 implicit none
 integer, intent(in) :: counter
 
-102 format (1P,19E15.5)
+102 format (1P,22E15.5)
 103 format (1P, 7E15.5)
 
 call calc_grav_acceleration(pos,acc)
@@ -22,7 +22,7 @@ if(snapshots=='y') then
 
    do ibody=1,N
 write(isnap,102) t/twopi, pos(:,ibody), vel(:,ibody), acc(:,ibody),&
-    semimaj(ibody),ecc(ibody),inc(ibody), &
+    semimaj(ibody),ecc(ibody),inc(ibody),longascend(ibody),argper(ibody),trueanom(ibody), &
     ekin(ibody),epot(ibody),etot(ibody),angmom(:,ibody)
     call flush(isnap)
  enddo
@@ -34,7 +34,7 @@ else
 
    do ibody=1,N
       write(ibody+ilog,102) t/twopi, pos(:,ibody), vel(:,ibody), acc(:,ibody),&
-semimaj(ibody),ecc(ibody),inc(ibody), &
+semimaj(ibody),ecc(ibody),inc(ibody),longascend(ibody),argper(ibody),trueanom(ibody), &
 ekin(ibody),epot(ibody),etot(ibody),angmom(:,ibody)
       call flush(ibody)
    enddo

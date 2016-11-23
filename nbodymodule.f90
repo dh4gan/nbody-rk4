@@ -21,6 +21,7 @@ integer :: N,ibody,jbody,ix,snapshotcounter
 
 ! Reals
 
+real :: small = 1.0e-20
 real :: t, dt, tsnap, tdump, tend
 real :: maxerror, tolerance,rsoft
 real :: system_ang, system_energy, initial_system_ang,initial_system_energy
@@ -35,7 +36,7 @@ real,allocatable,dimension(:,:) :: angmom
 
 real,dimension(3) :: system_angmom,rcom,vcom,acom
 real,allocatable,dimension(:) :: mass, ekin,epot,etot,angmag
-real,allocatable,dimension(:) :: r,semimaj,ecc,inc,longascend,argper,longper
+real,allocatable,dimension(:) :: r,semimaj,ecc,inc,longascend,argper,longper,trueanom
 
 ! Parameter filename
 
@@ -45,5 +46,6 @@ character(len=6) :: filenumformat
 character(len=100) :: outputfile
 character(len=50) :: outputprefix
 character(len=10) :: fileno
+
 
 end module nbodydata
