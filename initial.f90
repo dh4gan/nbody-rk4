@@ -6,9 +6,10 @@ use nbodydata
 
 implicit none
 
-integer :: nzeros
+integer :: nzeros,k
 real :: nfiles
 character(1) :: zerostring
+character(1) :: varformat
 
 
 ! TODO - read setup from file 
@@ -23,6 +24,28 @@ read(10,*) tsnap
 read(10,*) tolerance
 read(10,*) rsoft
 read(10,*) N
+read(10,*) varformat
+
+
+! Allocate arrays to hold particle data
+allocate(pos(3,N),vel(3,N),acc(3,N))
+allocate(newpos(3,N),newvel(3,N))
+allocate(angmom(3,N),angmag(N),ekin(N),epot(N),etot(N))
+allocate(mass(N),r(N),semimaj(N),ecc(N),inc(N))
+allocate(longascend(N),argper(N),longper(N), trueanom(N))
+
+
+pos(:,:) = 0.0
+vel(:,:) = 0.0
+acc(:,:) = 0.0
+
+if(varformat=='o') then
+
+else
+    do ibody = 1,N
+    read(10,*) mass(ibody), (pos(k,ibody),k=1,3), (vel(k,ibody),k=1,3)
+    enddo
+endif
 
 
 print*, N, ' bodies to be integrated'
@@ -41,40 +64,6 @@ print*, 'Softening Length: ',rsoft, ' AU'
 
 tend = tend*twopi
 tsnap = tsnap*twopi
-
-!snapshots = 'n'
-!outputprefix = 'test'
-!N = 2
-!tolerance = 1.0e-4
-!tend = 100*6.283
-!tsnap = 0.1
-!rsoft = 1.0e-5
-
-
-allocate(pos(3,N),vel(3,N),acc(3,N))
-allocate(newpos(3,N),newvel(3,N))
-allocate(angmom(3,N),angmag(N),ekin(N),epot(N),etot(N))
-allocate(mass(N),r(N),semimaj(N),ecc(N),inc(N))
-allocate(longascend(N),argper(N),longper(N), trueanom(N))
-
-pos(:,:) = 0.0
-vel(:,:) = 0.0
-acc(:,:) = 0.0
-
-newpos(:,:) = 0.0
-newvel(:,:) = 0.0
-
-mass(1) = 1.0
-mass(2) = 3.0e-6
-
-pos(:,1) = 0.0
-
-pos(:,2) = 0.0
-pos(1,2) = 1.0
-
-vel(:,:) = 0.0
-vel(2,2) = 1.0
-
 
 ! If the output format is individual bodies
 if(snapshots=='y') then
@@ -117,6 +106,8 @@ initial_system_energy = system_energy
 
 print*, 'Initial Total Energy = ', initial_system_energy
 print*, 'Initial Total Angular Momentum (Magnitude): ',initial_system_ang
+
+call sleep(1)
 
 ! Measure wall clock time
 call system_clock(start_clock,clock_rate,clock_max)

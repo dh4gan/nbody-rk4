@@ -16,6 +16,8 @@ use nbodydata
   print*, " "
   print*, "-----------------------------------------------"
   print*, " input parameters in ",trim(paramfile)
+  print*, "-----------------------------------------------"
+  call sleep(1)
 
 
 ! Read in parameter file and setup bodies
