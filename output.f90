@@ -10,8 +10,8 @@ integer, intent(in) :: counter
 102 format (1P,22E15.5)
 103 format (1P, 7E15.5)
 
-call calc_grav_acceleration(pos,acc)
-call orbits
+call calc_acceleration(pos,vel,acc)
+call calc_system_properties
 
 ! Either output timestep as a single snapshot
 if(snapshots=='y') then

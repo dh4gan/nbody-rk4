@@ -1,4 +1,4 @@
-subroutine orbits
+subroutine calc_orbit_from_vector(totalmass)
 ! Calculate the orbital parameters of all the bodies
 ! Also compute energy and angular momentum for error tracking
 
@@ -6,105 +6,19 @@ use nbodydata
 
 implicit none
 
-real :: totalmass, relpos, gravparam
+real :: totalmass, gravparam
 real :: rdotV, ndotR,ndotV,edotn,edotR, nmag
-real,dimension(3) :: sep,nplane
+real,dimension(3) :: nplane
 real,dimension(3,N) :: eccvector
 real,dimension(N) :: vdotr,rmag,vmag
 
-
-! Calculate centre of mass
-rcom(:) = 0.0
-vcom(:) = 0.0
-acom(:) = 0.0
-
-totalmass = sum(mass)
-
-do ibody=1,N
-   do ix=1,3
-      rcom(ix) = rcom(ix)+ mass(ibody)*pos(ix,ibody)
-      vcom(ix) = vcom(ix) + mass(ibody)*vel(ix,ibody)
-      acom(ix) = acom(ix) + mass(ibody)*acc(ix,ibody)
-   enddo
-
-rcom(:) = rcom(:)/totalmass
-vcom(:) = vcom(:)/totalmass
-acom(:) = acom(:)/totalmass
-
-enddo
-
-
-! Shift system into centre of mass frame
-do ibody=1,N
-    pos(:,ibody) = pos(:,ibody)-rcom(:)
-    vel(:,ibody) = vel(:,ibody)-vcom(:)
-    acc(:,ibody) = acc(:,ibody)-acom(:)
-enddo
-
 gravparam = G*totalmass
-
-! Compute angular momentum = r x v
-
-angmom(1,:) = pos(2,:)*vel(3,:) - pos(3,:)*vel(2,:)
-angmom(2,:) = pos(3,:)*vel(1,:) - pos(1,:)*vel(3,:)
-angmom(3,:) = pos(1,:)*vel(2,:) - pos(2,:)*vel(1,:)
-
-! Compute kinetic energy of the bodies
 
 rmag(:) =sqrt(pos(1,:)*pos(1,:) + pos(2,:)*pos(2,:) + pos(3,:)*pos(3,:))
 vmag(:) = sqrt(vel(1,:)*vel(1,:) + vel(2,:)*vel(2,:) + vel(3,:)*vel(3,:))
-angmag(:) = sqrt(angmom(1,:)*angmom(1,:) + angmom(2,:)*angmom(2,:) + angmom(3,:)*angmom(3,:))
-
-ekin(:) = 0.5*vmag(:)*vmag(:)
-
-! Compute potential energy
-
-do ibody=1,N
-
-    epot(ibody)=0.0
-
-    do jbody=1,N
-
-    if(ibody==jbody) cycle
-
-    do ix=1,3
-        sep(ix) = pos(ix,ibody) - pos(ix,jbody)
-    enddo
-
-    relpos = sqrt(sep(1)*sep(1) + sep(2)*sep(2)+sep(3)*sep(3) +rsoft*rsoft)
-
-    do ix=1,3
-    epot(ibody) = epot(ibody) - G*mass(jbody)/(relpos)
-    enddo
-    enddo
-
-enddo
-
-etot(:) = ekin(:) + epot(:)
-
-system_energy = sum(etot)
-
-do ix=1,3
-system_angmom(ix) = sum(angmom(ix,:))
-enddo
-
-system_ang =sqrt(system_angmom(1)*system_angmom(1) + system_angmom(2)*system_angmom(2)+system_angmom(3)*system_angmom(3))
-
-
-if(initial_system_energy >1.0e-30) then
-dE = (system_energy-initial_system_energy)/initial_system_energy
-else
-dE = 0.0
-endif
-
-if(initial_system_ang>1.0e-30)then
-dL = (system_ang-initial_system_ang)/initial_system_ang
-else
-dL=0.0
-endif
 
 ! Calculate orbital parameters - a,e,i
-
+print*, gravparam
 
 ! Eccentricity first - calculate eccentricity (Laplace-Runge-Lenz) Vector
 vdotr(:) = 0.0
@@ -212,7 +126,125 @@ do ibody=1,N
 
 enddo
 
- end subroutine orbits
+end subroutine calc_orbit_from_vector
+
+subroutine calc_vector_from_orbit(totalmass)
+! Calculates body's position and velocity from orbital data
+
+use nbodydata
+
+implicit none
+
+real :: totalmass,gravparam
+real,dimension(N) :: rmag,vmag,semilatusrectum
+
+rmag(:) = semimaj(:) * (1.0 - ecc(:) * ecc(:)) / (1.0 &
++ ecc(:) * cos(trueanom(:)));
+
+! 2. Calculate position vector in orbital plane */
+
+pos(1,:) = rmag(:)*cos(trueanom(:));
+pos(2,:) = rmag(:) * sin(trueanom(:));
+pos(3,:) = 0.0;
+
+! 3. Calculate velocity vector in orbital plane */
+semilatusrectum(:) = abs(semimaj(:) * (1.0 - ecc(:) * ecc(:)));
+gravparam = G * totalmass;
+
+do ibody=1,N
+
+if (semilatusrectum(ibody) > small) then
+
+vmag(ibody) = sqrt(gravparam / semilatusrectum(ibody));
+
+else
+
+vmag(ibody) = 0.0;
+endif
+enddo
+
+vel(1,:) = -vmag(:) * sin(trueanom(:));
+vel(2,:) = vmag(:) * (cos(trueanom(:)) + ecc(:));
+vel(3,:) = 0.0;
+
+! 4. Begin rotations to correctly align the orbit
+! Firstly, Rotation around z axis by -argument of Periapsis */
+
+call rotate_Z(pos, N, -1 * argper);
+call rotate_Z(vel, N, -1 * argper);
+
+! Secondly, Rotate around x by -inclination */
+
+call rotate_X(pos, N, -1 * inc);
+call rotate_X(vel, N, -1 * inc);
+
+! Lastly, Rotate around z by longitudeAscendingNode */
+
+call rotate_Z(pos,N,-1 * longascend);
+call rotate_Z(vel,N,-1 * longascend);
+
+end subroutine calc_vector_from_orbit
+
+subroutine rotate_X(vector,nrows,angle)
+! Rotates 3 x nrows vector of particle data around x-axis by angle
+
+implicit none
+integer, intent(in)::nrows
+real,intent(in),dimension(nrows) :: angle
+real,intent(inout),dimension(3,nrows) :: vector
+
+real, dimension(3,nrows) :: newvector
+
+newvector(:,:) = vector(:,:)
+where(abs(angle)>1.0e-20)
+newvector(1,:) = vector(1,:)
+newvector(2,:) = vector(2,:)*cos(angle(:)) - vector(3,:)*sin(angle(:));
+newvector(3,:) = vector(2,:)*sin(angle(:)) + vector(3,:)*cos(angle(:));
+endwhere
+
+end subroutine rotate_X
+
+subroutine rotate_Y(vector,nrows,angle)
+! Rotates 3 x nrows vector of particle data around x-axis by angle
+
+implicit none
+integer, intent(in)::nrows
+real,intent(in),dimension(nrows) :: angle
+real,intent(inout),dimension(3,nrows) :: vector
+
+real, dimension(3,nrows) :: newvector
+
+newvector(:,:) = vector(:,:)
+where(abs(angle)>1.0e-20)
+
+newvector(1,:) = vector(1,:)*cos(angle(:)) + vector(3,:)*sin(angle(:));
+newvector(2,:) = vector(2,:)
+newvector(3,:) = -vector(1,:)*sin(angle(:)) + vector(3,:)*cos(angle(:));
+
+endwhere
+
+end subroutine rotate_Y
+
+subroutine rotate_Z(vector,nrows,angle)
+! Rotates 3 x nrows vector of particle data around x-axis by angle
+
+implicit none
+integer, intent(in)::nrows
+real,intent(in),dimension(nrows) :: angle
+real,intent(inout),dimension(3,nrows) :: vector
+
+real, dimension(3,nrows) :: newvector
+
+newvector(:,:) = vector(:,:)
+
+where(abs(angle)>1.0e-20)
+newvector(1,:) = vector(1,:)*cos(angle(:)) - vector(2,:)*sin(angle(:));
+newvector(2,:) = vector(1,:)*sin(angle(:)) + vector(2,:)*cos(angle(:));
+newvector(3,:) = vector(3,:)
+endwhere
+
+end subroutine rotate_Z
+
 
 
 

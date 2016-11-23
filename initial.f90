@@ -12,7 +12,7 @@ character(1) :: zerostring
 character(1) :: varformat
 
 
-! TODO - read setup from file 
+! Read the simulation setup from file
 
 print*, 'Reading inputs from ',trim(paramfile)
 
@@ -99,7 +99,7 @@ open(ilog,file=TRIM(outputprefix)//'.log',form='formatted')
 ! Calculate initial energy, angular momentum and store
 
 call calc_acceleration(pos,vel,acc)
-call orbits
+call calc_system_properties
 
 initial_system_ang = system_ang
 initial_system_energy = system_energy
