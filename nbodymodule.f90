@@ -42,7 +42,7 @@ real,allocatable,dimension(:) :: r,semimaj,ecc,inc,longascend,argper,longper,tru
 
 ! Parameter filename
 
-character(16),parameter :: paramfile = 'nbody_rk4.params'
+character(100) :: paramfile = 'nbody_rk4.params'
 character(1) :: snapshots
 character(len=6) :: filenumformat
 character(len=100) :: outputfile

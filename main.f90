@@ -15,7 +15,15 @@ use nbodydata
   print*, "-----------------------------------------------"
   print*, " "
   print*, "-----------------------------------------------"
-  print*, " input parameters in ",trim(paramfile)
+  call getarg(1,paramfile)
+
+  if(paramfile=='') then
+     print*, 'Parameter file name not found from command line'
+     paramfile = 'nbody_rk4.params'
+     print*, 'Reverting to default'
+  endif
+ 
+  print*, " input parameters to be read from ",trim(paramfile)
   print*, "-----------------------------------------------"
   call sleep(1)
 
