@@ -174,6 +174,7 @@ call rotate_Z(vel, N, -1 * argper);
 
 ! Secondly, Rotate around x by -inclination */
 
+
 call rotate_X(pos, N, -1 * inc);
 call rotate_X(vel, N, -1 * inc);
 
@@ -201,6 +202,8 @@ newvector(2,:) = vector(2,:)*cos(angle(:)) - vector(3,:)*sin(angle(:));
 newvector(3,:) = vector(2,:)*sin(angle(:)) + vector(3,:)*cos(angle(:));
 endwhere
 
+vector(:,:) = newvector(:,:)
+
 end subroutine rotate_X
 
 subroutine rotate_Y(vector,nrows,angle)
@@ -222,6 +225,8 @@ newvector(3,:) = -vector(1,:)*sin(angle(:)) + vector(3,:)*cos(angle(:));
 
 endwhere
 
+vector(:,:) = newvector(:,:)
+
 end subroutine rotate_Y
 
 subroutine rotate_Z(vector,nrows,angle)
@@ -241,6 +246,8 @@ newvector(1,:) = vector(1,:)*cos(angle(:)) - vector(2,:)*sin(angle(:));
 newvector(2,:) = vector(1,:)*sin(angle(:)) + vector(2,:)*cos(angle(:));
 newvector(3,:) = vector(3,:)
 endwhere
+
+vector(:,:) = newvector(:,:)
 
 end subroutine rotate_Z
 

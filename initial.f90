@@ -40,6 +40,11 @@ vel(:,:) = 0.0
 acc(:,:) = 0.0
 
 if(varformat=='o') then
+   do ibody=1,N
+      read(10,*) mass(ibody), semimaj(ibody),ecc(ibody),inc(ibody),longascend(ibody), argper(ibody),trueanom(ibody)
+   enddo
+
+   call calc_vector_from_orbit(sum(mass))
 
 else
     do ibody = 1,N
