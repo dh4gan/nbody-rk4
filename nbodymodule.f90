@@ -21,7 +21,9 @@ integer :: N,ibody,jbody,ix,snapshotcounter
 
 ! Reals
 
-real :: small = 1.0e-20
+real,parameter :: small = 1.0e-20
+real,parameter :: dampfac = 10.0
+
 real :: t, dt, tsnap, tdump, tend
 real :: maxerror, tolerance,rsoft
 real :: system_ang, system_energy, initial_system_ang,initial_system_energy
