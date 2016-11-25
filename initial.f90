@@ -47,7 +47,6 @@ else
     enddo
 endif
 
-
 print*, N, ' bodies to be integrated'
 print*, 'Files will be written with prefix ', outputprefix
 if(snapshots=='y') then

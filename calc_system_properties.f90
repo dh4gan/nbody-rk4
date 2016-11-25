@@ -48,7 +48,6 @@ acom(:) = acom(:)/totalmass
 
 enddo
 
-
 ! Shift system into centre of mass frame
 do ibody=1,N
 pos(:,ibody) = pos(:,ibody)-rcom(:)

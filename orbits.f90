@@ -18,7 +18,6 @@ rmag(:) =sqrt(pos(1,:)*pos(1,:) + pos(2,:)*pos(2,:) + pos(3,:)*pos(3,:))
 vmag(:) = sqrt(vel(1,:)*vel(1,:) + vel(2,:)*vel(2,:) + vel(3,:)*vel(3,:))
 
 ! Calculate orbital parameters - a,e,i
-print*, gravparam
 
 ! Eccentricity first - calculate eccentricity (Laplace-Runge-Lenz) Vector
 vdotr(:) = 0.0
