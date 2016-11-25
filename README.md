@@ -14,14 +14,18 @@ The code also calculates orbital elements (by default around the centre of mass)
 Newtonian Gravitation, but drag terms are also implementable.  These terms mimic the drag forces experienced
 by particles in gaseous discs (radial inward migration, eccentricity and inclination damping).
 
-## Outputs ##
+### Outputs ###
+---------------
+
 The code can produce two types of output:
 
 1) One file per particle, to easily plot particle properties vs time
+
 2) Snapshot files, where all particle data at a single timestep is recorded
 
 
-## Compilation and Execution ##
+### Compilation and Execution ###
+----------------------------------
 
 This code was developed and tested on gfortran, and compiled with standard Makefile software.
 
@@ -30,6 +34,3 @@ The code is compiled using the `Makefile` contained within the repo, and run wit
 `> ./nbody_rk4 <paramfile> `
 
 Where <paramfile> is the parameters file needed to setup the N Body system (example: `nbody_rk4.params`)
-
-
-
