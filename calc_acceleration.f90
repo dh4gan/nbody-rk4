@@ -6,13 +6,9 @@ implicit none
 real,dimension(3,N), intent(in) :: position,velocity
 real,dimension(3,N), intent(out) :: acceleration
 
-real,dimension(N) :: tmig
-
 acceleration(:,:) = 0.0
 
-tmig(:) = 1.0e4
-
 call calc_grav_acceleration(position,acceleration)
-call calc_drag_terms(position,velocity,acceleration,tmig)
+call calc_drag_terms(position,velocity,acceleration)
 
 end subroutine calc_acceleration

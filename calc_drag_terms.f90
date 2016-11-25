@@ -1,4 +1,4 @@
-subroutine calc_drag_terms(position,velocity,acceleration,tmig)
+subroutine calc_drag_terms(position,velocity,acceleration)
 ! Calculates approximation to 3 drag terms given a migration timescale
 ! Migration drag at timescale tmig
 ! Eccentricity damping on timescale tmig/10
@@ -8,7 +8,6 @@ subroutine calc_drag_terms(position,velocity,acceleration,tmig)
 use nbodydata
 implicit none
 
-real,dimension(N), intent(in) :: tmig
 real,dimension(3,N),intent(in) :: position,velocity
 real,dimension(3,N),intent(inout) :: acceleration
 real,dimension(N) :: vdotr,rmag

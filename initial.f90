@@ -31,7 +31,7 @@ read(10,*) varformat
 allocate(pos(3,N),vel(3,N),acc(3,N))
 allocate(newpos(3,N),newvel(3,N))
 allocate(angmom(3,N),angmag(N),ekin(N),epot(N),etot(N))
-allocate(mass(N),r(N),semimaj(N),ecc(N),inc(N))
+allocate(mass(N),r(N),semimaj(N),ecc(N),inc(N),tmig(N))
 allocate(longascend(N),argper(N),longper(N), trueanom(N))
 
 
@@ -43,7 +43,7 @@ if(varformat=='o') then
 
 else
     do ibody = 1,N
-    read(10,*) mass(ibody), (pos(k,ibody),k=1,3), (vel(k,ibody),k=1,3)
+    read(10,*) mass(ibody), (pos(k,ibody),k=1,3), (vel(k,ibody),k=1,3), tmig(ibody)
     enddo
 endif
 
