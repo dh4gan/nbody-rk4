@@ -19,6 +19,7 @@ print*, 'Reading inputs from ',trim(paramfile)
 open(10,file=paramfile,form='formatted')
 read(10,*) outputprefix
 read(10,*) snapshots
+read(10,*) heliocentric
 read(10,*) tend
 read(10,*) tsnap
 read(10,*) tolerance
@@ -41,7 +42,7 @@ acc(:,:) = 0.0
 
 if(varformat=='o') then
    do ibody=1,N
-      read(10,*) mass(ibody), semimaj(ibody),ecc(ibody),inc(ibody),longascend(ibody), argper(ibody),trueanom(ibody)
+      read(10,*) mass(ibody), semimaj(ibody),ecc(ibody),inc(ibody),longascend(ibody), argper(ibody),trueanom(ibody), tmig(ibody)
    enddo
 
    call calc_vector_from_orbit(sum(mass))
@@ -58,6 +59,12 @@ if(snapshots=='y') then
     print*, 'Output in the form of snapshots'
 else
     print*, 'Output in the form of individual files for each particle'
+endif
+
+if(heliocentric=='y') then
+   print*, 'Simulation to be run in heliocentric frame (particle 1)'
+else
+   print*, 'Simulation to be run in Centre of Mass Frame'
 endif
 
 print*, 'Maximum Runtime: ',tend,' years'

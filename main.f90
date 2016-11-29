@@ -4,8 +4,12 @@ PROGRAM nbody_rk4
 
 use nbodydata
 
+IMPLICIT NONE
+
+real :: totalmass
+
 ! Print code header
- IMPLICIT NONE
+
 
   !             Display header
   print*, " "
@@ -44,6 +48,11 @@ call output(snapshotcounter)
 
 ! Begin integration
 do while(t<tend)
+
+   ! If in heliocentric mode, transform to that frame TODO
+   if(heliocentric=='y') then
+      call calc_heliocentric_frame(totalmass)
+   endif
 
    call integrate(dt,pos,vel,newpos,newvel)
 

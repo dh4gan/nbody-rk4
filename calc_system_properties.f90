@@ -8,7 +8,11 @@ implicit none
 
 real :: totalmass
 
-call calc_centre_of_mass(totalmass)
+if(heliocentric=='y') then
+   call calc_heliocentric_frame(totalmass)
+else
+   call calc_centre_of_mass(totalmass)
+endif
 call angular_momentum
 call energy
 
@@ -16,6 +20,27 @@ call calc_orbit_from_vector(totalmass)
 
 end subroutine calc_system_properties
 
+subroutine calc_heliocentric_frame(totalmass)
+! Reset the system's frame so that the particle 1 is at the centre
+
+use nbodydata
+
+
+! Calculate centre of heliocentric frame
+rcom(:) = pos(:,1)
+vcom(:) = vel(:,1)
+acom(:) = acc(:,1)
+
+totalmass = sum(mass)
+
+! Shift system into this frame frame
+do ibody=1,N
+pos(:,ibody) = pos(:,ibody)-rcom(:)
+vel(:,ibody) = vel(:,ibody)-vcom(:)
+acc(:,ibody) = acc(:,ibody)-acom(:)
+enddo
+
+end subroutine calc_heliocentric_frame
 
 
 subroutine calc_centre_of_mass(totalmass)
