@@ -8,4 +8,4 @@ import filefinder as ff
 
 prefix = raw_input('What is the run prefix? ')
 filename = ff.find_local_input_files(prefix+'*')
-io.plot_data_singlefile(filename, filetype='snapshot', showPlot='true')
+io.plot_snapshot(filename,'snapshot')
