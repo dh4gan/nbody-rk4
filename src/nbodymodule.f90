@@ -15,7 +15,7 @@ real, parameter :: twopi = 2.0*pi
 !
 
 integer,parameter :: isnap = 10
-integer,parameter :: ilog = 2
+integer,parameter :: ilog = 22
 
 integer :: N,ibody,jbody,ix,snapshotcounter
 
