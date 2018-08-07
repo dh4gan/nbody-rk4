@@ -67,23 +67,23 @@ def select_variables(filetype='snapshots'):
         coldict = snapcol
         labeldict= snaplabel
         
-    print "Which variable for the x-axis?"
+    print ("Which variable for the x-axis?")
 
     for i in range(len(variablekeys)):
-        print variablekeys[i],":\t \t \t", labeldict[variablekeys[i]]
+        print (variablekeys[i],":\t \t \t", labeldict[variablekeys[i]])
 
-    keyword = raw_input("Enter appropriate keyword:   ")
+    keyword = input("Enter appropriate keyword:   ")
 
     xkey = keyword
     ix = coldict[keyword]
     xlabel = labeldict[keyword]
 
-    print "Which variable for the y-axis?"
+    print ("Which variable for the y-axis?")
 
     for i in range(len(variablekeys)):
-        if(i!=ix): print variablekeys[i],":\t \t", labeldict[variablekeys[i]]
+        if(i!=ix): print (variablekeys[i],":\t \t", labeldict[variablekeys[i]])
 
-    keyword = raw_input("Enter appropriate keyword:   ")
+    keyword = input("Enter appropriate keyword:   ")
 
     ykey = keyword
     iy = coldict[keyword]
@@ -93,16 +93,16 @@ def select_variables(filetype='snapshots'):
 
 def read_body_file(filename):
     
-    print 'Reading single particle data from file ',filename
+    print ('Reading single particle data from file ',filename)
     return np.genfromtxt(filename)
 
 def read_log_file(filename):
 
-    print 'Reading log data from file ',filename        
+    print ('Reading log data from file ',filename)
     return np.genfromtxt(filename)
 
 def read_snapshot_file(filename):
-    print 'Reading snapshot data from file ',filename
+    print ('Reading snapshot data from file ',filename)
     
     f_obj = open(filename,'r')
     time = float(f_obj.readline())
@@ -117,17 +117,17 @@ def read_all_bodyfiles(prefix):
     # Ignore log files
     for i in range(len(filenames)):
         if '.log' in filenames[i]:
-            print 'Removing log file ',filenames[i] 
+            print ('Removing log file ',filenames[i])
             filenames.remove(filenames[i])
     
     nbodies = len(filenames)
     
-    print 'Reading data for ',nbodies, ' bodies'        
+    print ('Reading data for ',nbodies, ' bodies')
               
     data = []      
     for i in range(nbodies):
         filename = filenames[i]
-        print 'Reading ',filename        
+        print ('Reading ',filename)
         data.append(read_body_file(filename))
     
     return filenames, data
@@ -163,7 +163,7 @@ def plot_body_allfiles(prefix,showPlot=False):
         
     nbodies = len(alldata)
     
-    print nbodies
+    print (nbodies)
     fig1 = plt.figure()
     ax1 = fig1.add_subplot(111)
     
@@ -175,7 +175,7 @@ def plot_body_allfiles(prefix,showPlot=False):
         try:
             ax1.plot(alldata[i][:,ix], alldata[i][:,iy], label=filenames[i])
         except IndexError:
-            print "File ",filenames[i], " has no entries, skipping"
+            print ("File ",filenames[i], " has no entries, skipping")
     
     ax1.legend()
     if(showPlot): 
@@ -246,9 +246,9 @@ def animate_bodies(prefix):
         if(body_ymin<ymin): ymin = body_ymin
     
     
-    print 'Plot range: '
-    print xlabel,' : ',xmin, xmax
-    print ylabel,' : ',ymin, ymax
+    print ('Plot range: ')
+    print (xlabel,' : ',xmin, xmax)
+    print (ylabel,' : ',ymin, ymax)
     
                  
     iskip = np.zeros(nbodies)
@@ -262,7 +262,7 @@ def animate_bodies(prefix):
             try:
                 t = alldata[i][j,itime]
             except IndexError:
-                print 'No further data for ',filenames[i], ': skipping'
+                print ('No further data for ',filenames[i], ': skipping')
                 iskip[i]=1
                 continue
                                    
@@ -305,5 +305,6 @@ def calc_orbit_ellipse(orbitdata,itime):
     x,y,z = orbit.calcOrbitTrack(npoints)
     
     return x,y,z
+    
     
     
