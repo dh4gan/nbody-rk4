@@ -161,7 +161,7 @@ etot(:) = ekin(:) + epot(:)
 
 system_energy = sum(etot)
 
-if(initial_system_energy >1.0e-30) then
+if(abs(initial_system_energy) >1.0e-30) then
 dE = (system_energy-initial_system_energy)/initial_system_energy
 else
 dE = 0.0
